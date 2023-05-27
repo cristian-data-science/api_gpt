@@ -1,0 +1,20 @@
+from selenium import webdriver
+import pickle
+import time
+
+driver = webdriver.Chrome()  # Reemplaza 'Chrome' con el navegador que estés utilizando
+driver.get("https://chat.forefront.ai")
+
+# Espera a que se cargue la página
+time.sleep(3)
+
+cookies = pickle.load(open("cookies.pkl", "rb"))
+for cookie in cookies:
+    driver.add_cookie(cookie)
+
+# Refresca la página para que las cookies sean efectivas
+driver.refresh()
+
+time.sleep(40)
+
+# Ahora puedes proceder con tus pruebas automatizadas
