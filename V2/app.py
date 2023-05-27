@@ -1,4 +1,3 @@
-
 import streamlit as st
 import undetected_chromedriver as uc
 from selenium import webdriver
@@ -10,22 +9,24 @@ from selenium.common.exceptions import TimeoutException
 from time import sleep
 import sys
 import textwrap
-from funciones import envio_recibo_texto
+from funciones import prender_ia, envia_texto, recibe_texto
+
 
 def main():
+    driver = None
     st.title("Aplicación de Chat")
 
     opciones_ia = ["", "Pata: IA de Patagonia", "Otra opción"]  # Agrega una opción vacía al principio
     seleccion_ia = st.selectbox('Selecciona una IA:', opciones_ia)
 
+    if seleccion_ia == "Pata: IA de Patagonia":
+        driver = prender_ia()
+
     texto_usuario = st.text_input('Introduce tu texto aquí:')
 
-    if texto_usuario and seleccion_ia == "Pata: IA de Patagonia":  
-        # Se ejecuta si texto_usuario no está vacío y el usuario seleccionó "Pata: La IA de Patagonia"   
-        envio_recibo_texto(texto_usuario)
-
-    # Agrega más condiciones si deseas hacer algo cuando el usuario selecciona otras opciones
-
+    if texto_usuario and seleccion_ia == "Pata: IA de Patagonia":
+        envia_texto(texto_usuario)
+        recibe_texto()
 
 if __name__ == '__main__':
     main()

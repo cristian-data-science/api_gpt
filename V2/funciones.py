@@ -10,24 +10,26 @@ from selenium.common.exceptions import TimeoutException
 from time import sleep
 import sys
 import textwrap
+from typing import Optional
 
+driver: Optional[webdriver.Chrome] = None
 
-
-def prender_ia_pata(driver):
-    pass
-
-
-
-def envio_recibo_texto(texto_usuario):
-
+def prender_ia():
+    global driver
+    st.info("Encendiendo la IA... por favor espere.")
     options = webdriver.ChromeOptions()
     options.add_argument("--start-maximized")
-    #options.add_argument('--headless=new')
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--log-level=3")
     driver = uc.Chrome(enable_cdp_events=True, headless=False, version_main=112)
     driver.get('https://chat.forefront.ai/')
     sleep(3)
+
+def envia_texto(texto_usuario):
+    global driver
+    if driver is None:
+        raise Exception("No se ha iniciado la IA")
+
     input_text = driver.find_element(By.XPATH, '/html/body/div[1]/main/div[1]/div[3]/div[2]/div[2]/div/div[1]/div/div/div')
     input_text.click()
     segment_size = 50
@@ -36,8 +38,11 @@ def envio_recibo_texto(texto_usuario):
         input_text.send_keys(segment)
         sleep(0.5)
     input_text.send_keys(Keys.ENTER)
-    
 
+def recibe_texto():
+    global driver
+    if driver is None:
+        raise Exception("No se ha iniciado la IA")
 
     respuesta = ''
     output = st.empty()
@@ -93,5 +98,3 @@ def envio_recibo_texto(texto_usuario):
     if palabra_parcial:
         texto_cache += palabra_parcial
     output.text(textwrap.fill(texto_cache, 80))
-
-    driver.close()
