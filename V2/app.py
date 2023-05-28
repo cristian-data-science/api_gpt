@@ -9,24 +9,27 @@ from selenium.common.exceptions import TimeoutException
 from time import sleep
 import sys
 import textwrap
-from funciones import prender_ia, envia_texto, recibe_texto
+from funciones import ChatBot
 
+
+def get_chat_bot():
+    return ChatBot.instance()
 
 def main():
-    driver = None
+    chat_bot = get_chat_bot()
     st.title("Aplicación de Chat")
 
-    opciones_ia = ["", "Pata: IA de Patagonia", "Otra opción"]  # Agrega una opción vacía al principio
+    opciones_ia = ["", "Pata: IA de Patagonia", "Otra opción"]
     seleccion_ia = st.selectbox('Selecciona una IA:', opciones_ia)
 
-    if seleccion_ia == "Pata: IA de Patagonia":
-        driver = prender_ia()
+    if seleccion_ia == "Pata: IA de Patagonia" and chat_bot.driver is None:
+        chat_bot.prender_ia()
 
     texto_usuario = st.text_input('Introduce tu texto aquí:')
 
     if texto_usuario and seleccion_ia == "Pata: IA de Patagonia":
-        envia_texto(texto_usuario)
-        recibe_texto()
+        chat_bot.envia_texto(texto_usuario)
+        chat_bot.recibe_texto()
 
 if __name__ == '__main__':
     main()

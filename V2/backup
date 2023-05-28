@@ -1,45 +1,20 @@
-
-import streamlit as st
-import undetected_chromedriver as uc
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
-from time import sleep
-import sys
-import textwrap
-from typing import Optional
-
-
-class Singleton:
-    _instance = None
-
-    @classmethod
-    def instance(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = cls(*args, **kwargs)
-        return cls._instance
-
-
-class ChatBot(Singleton):
+class ChatBot:
 
     def __init__(self):
-        if not hasattr(self, "driver"):
-            self.driver = None
+        self.driver = None
 
     def prender_ia(self):
         if self.driver is None:
             st.info("Encendiendo la IA... por favor espere.")
             options = webdriver.ChromeOptions()
             # profile chrome
-            user_data_dir = r'C:\Users\Cristian Gutierrez\AppData\Local\Google\Chrome\User Data\Profile 1'          
-            options.add_argument('--user-data-dir=' + user_data_dir)
+            #user_data_dir = r'C:\Users\Cristian Gutierrez\AppData\Local\Google\Chrome\User Data\Profile 1'          
+            #options.add_argument('--user-data-dir=' + user_data_dir)
+           
             options.add_argument("--start-maximized")
             options.add_argument("--window-size=1920,1080")
             options.add_argument("--log-level=3")
-            self.driver = uc.Chrome(enable_cdp_events=True, headless=True, version_main=112,  options=options)
+            self.driver = uc.Chrome(enable_cdp_events=True, headless=True, version_main=112, options=options)
             self.driver.get('https://chat.forefront.ai/')
             sleep(3)
 
@@ -117,6 +92,3 @@ class ChatBot(Singleton):
             texto_cache += palabra_parcial
         output.text(textwrap.fill(texto_cache, 80))
         #self.driver.close() 
-            
-
-        
