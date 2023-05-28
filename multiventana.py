@@ -40,7 +40,7 @@ if __name__ == '__main__':
     # Crea y comienza 50 procesos para abrir las ventanas de Chrome
     processes = []
     for _ in range(10):
-        p = Process(target=open_window, args=('https://www.puntoticket.com/luis-miguel',))
+        p = Process(target=open_window, args=('link_here',))
         p.start()
         processes.append(p)
 
